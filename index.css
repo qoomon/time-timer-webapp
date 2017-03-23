@@ -26,8 +26,8 @@ body {
 #timerGroundEnd {
   position: absolute;
   width: 100px;
-  height: calc(40% + 5px);
-  top: -5px;
+  height: 40%;
+  top: 0px;
   left: 50%;
   z-index: 2;
   background: #292929;
@@ -38,7 +38,7 @@ body {
 #timerBarEnd {
   position: absolute;
   width: 8px;
-  height: 37.2%;
+  height: 36%;
   z-index: 2;
   background: #292929;
 }
