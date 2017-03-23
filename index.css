@@ -1,6 +1,9 @@
 body {
   background-color: #222
 }
+div {
+  box-sizing: border-box;
+}
 
 #timerContainer {
   position: relative;
@@ -17,6 +20,8 @@ body {
   border-width: 5px;
   border-style: solid;
   border-color: hsl(0, 0%, 16%);
+  transform: scaleX(1);
+  transition: all 1.5s cubic-bezier(.42,0,.58,1);
 }
 
 #timerDisk > svg > path:nth-child(1) {
@@ -26,19 +31,19 @@ body {
 #timerGroundEnd {
   position: absolute;
   width: 100px;
-  height: 40%;
-  top: 0px;
+  height: calc(40% + 5px);
+  top: -5px;
   left: 50%;
   z-index: 2;
   background: #292929;
-  box-shadow: -6px 3px 15px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: -6px 3px 15px 8px rgba(0,0,0,0.5);
   clip: rect(-53px 6px 1000 -1000px);
 }
 
 #timerBarEnd {
   position: absolute;
   width: 8px;
-  height: 36%;
+  height: calc(36% + 3px);
   z-index: 2;
   background: #292929;
 }
@@ -61,18 +66,23 @@ body {
   height: 20%;
   left: 40%;
   top: 40%;
-  padding-top: calc(10% - 1rem - 4px);
+  padding-top: calc(10% - 1rem + 2px);
   text-align: center;
   font-family: 'Helvetica';
   font-size: 2rem;
+  border-radius: 50%;
 }
 
 #timerDirection {
   position: absolute;
-  width: 30px;
-  left: 40%;
-  top: 40%;
-  padding-top: calc(10% - 1rem - 4px);
-  background-image: url("direction.png");
+  width: 16px;
+  height: 16px;
+  left: calc(50% - 8px);
+  top: calc(40% - 8px + 24px);
+  background-image: url("count_down.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: scaleX(1);
+  transition: all 1.5s cubic-bezier(.42,0,.58,1);
 }
 

@@ -17,20 +17,32 @@ var $timerDisk = $('#timerDisk');
 var $timerBarKnob = $('#timerBarKnob');
 var $timerBarEnd = $('#timerBarEnd');
 var $timerTime = $('#timerTime');
+var $timerDirection = $('#timerDirection');
 
 var timerType = "countdown";
 function toggleTimerType(){
+  var scaleX;
+  var rotate;
+  var directionImage;
   if(timerType == "countdown") {
     timerType = "countup";
-    $timerDisk.css({ 
-      transform: 'scale(-1, 1)'
-    });
+    scaleX = -1;
+    rotate = 360.0;
+    directionImage = 'count_up.png';
   } else {
     timerType = "countdown";
-    $timerDisk.css({ 
-      transform: 'scale(1, 1)'
-    });
+    scaleX = 1;
+    rotate = 0.0;
+    directionImage = 'count_down.png';
   }
+  $timerDisk.css({ 
+    transform: 'scaleX(' + scaleX +')'
+  });
+  
+  $timerDirection.css({ 
+    transform: 'scaleX(' + scaleX + ')',
+    backgroundImage: 'url(' + directionImage + ')'
+  });
   
   startTimer();
 }
@@ -104,14 +116,12 @@ var oldSliderDeg = null;
 var countainerMousedown = false;
 $timerDisk
   .bind('mousedown touchstart', function(e) {
-    console.log('mousedown');
     countainerMousedown = true;
     stopTimer();
     e.originalEvent.preventDefault();
   })
   .bind('mousemove touchmove', function(e) {
     if (countainerMousedown) {
-      console.log('mousemove');
       var containerOffset = $timerDisk.offset();
       var movePos = {
         x: (e.pageX||e.originalEvent.touches[0].pageX)- containerOffset.left,
@@ -128,11 +138,9 @@ $timerDisk
     }
   })
   .bind('mouseup touchend', function(e) {
-    console.log('mouseup');
     countainerMousedown = false;
     startTimer();
   });
-
 
 $timerTime.bind('mousedown touchstart', toggleTimerType);
 
