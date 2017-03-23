@@ -24,15 +24,19 @@ gulp.task('clean', function () {
     return gulpDel([destDir]);
 });
 
-gulp.task('serve', ['build'], function () {
 
+gulp.task('buildReload', ['build'], function (callback) {
+    browserSync.reload();
+    callback();
+});
+
+gulp.task('serve', ['build'], function () {
     browserSync.init({
         server: {
             baseDir: "./dist"
         }
     });
-    gulp.watch('app/**/*', ['build']);
-    gulp.watch('dist/**/*').on('change', browserSync.reload);
+    gulp.watch('app/**/*', ['buildReload']);
 });
 
 gulp.task('build', ['clean'], function (callback) {

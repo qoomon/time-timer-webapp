@@ -12,12 +12,42 @@ function seconds2Date(seconds){
   return date;
 }
 
-var $timerContainer = $('#timerContainer');
+var $timerDisk = $('#timerDisk');
 var $timerBarKnob = $('#timerBarKnob');
 var $timerBarEnd = $('#timerBarEnd');
+var $timerTime = $('#timerTime');
+var $timerDirection = $('#timerDirection');
+
+var timerType = "countdown";
+function toggleTimerType(){
+  var scaleX;
+  var rotate;
+  var directionImage;
+  if(timerType == "countdown") {
+    timerType = "countup";
+    scaleX = -1;
+    rotate = 360.0;
+    directionImage = 'count_up.png';
+  } else {
+    timerType = "countdown";
+    scaleX = 1;
+    rotate = 0.0;
+    directionImage = 'count_down.png';
+  }
+  $timerDisk.css({ 
+    transform: 'scaleX(' + scaleX +')'
+  });
+  
+  $timerDirection.css({ 
+    transform: 'scaleX(' + scaleX + ')',
+    backgroundImage: 'url(' + directionImage + ')'
+  });
+  
+  startTimer();
+}
 
 var setSliderOrientation = function(deg){
-  var containerRadius = $timerContainer.width() / 2;
+  var containerRadius = $timerDisk.width() / 2;
   var pos = {
     x: - Math.sin(deg * Math.PI / 180) * (containerRadius - 10) + containerRadius,
     y: - Math.cos(deg * Math.PI / 180) * (containerRadius - 10) + containerRadius
@@ -31,7 +61,8 @@ var setSliderOrientation = function(deg){
   });
 }
 
-var timer = new ProgressBar.Circle($timerContainer.get(0), {
+
+var timer = new ProgressBar.Circle($timerDisk.get(0), {
   color: 'inherit', // inherit to support css styling
   trailWidth: 40,
   trailColor: 'inherit', // inherit to support css styling
@@ -46,22 +77,30 @@ var timer = new ProgressBar.Circle($timerContainer.get(0), {
   // Set default step function for all animate calls
   step: function(state, circle) {
     circle.path.setAttribute('stroke', state.color);
-    var remainingSeconds = Math.round(circle.value() * DURATION_IN_SECONDS);
-    circle.setText(seconds2Date(remainingSeconds).toISOString().substr(14, 5));
     var deg = circle.value() * 360;
     setSliderOrientation(deg);
+    
+    var valueSeconds = Math.round(circle.value() * DURATION_IN_SECONDS);
+    if(valueSeconds != circle.valueSeconds){
+      $timerTime.text(seconds2Date(valueSeconds).toISOString().substr(14, 5));
+      circle.valueSeconds = valueSeconds;
+    }
   }
 });
 timer.svg.style.transform= 'scale(-1, 1)';
-timer.text.style.fontFamily = 'Helvetica';
-timer.text.style.fontSize = '2rem';
 
 var setTimer = function(deg){
-  timer.set(1 - (deg / 360.0));
+  var startValue = timerType == "countdown" ? 1.0 : 0.0;
+  var newValue = Math.abs(startValue - (deg / 360.0));
+  timer.set(newValue);
 }
 
 var startTimer = function(){
-  timer.animate(0.0, { duration: DURATION_IN_SECONDS * 1000 * timer.value() }, function(){
+  var finishValue = timerType == "countdown" ? 0.0 : 1.0;
+  var valueDiff = Math.abs(finishValue - timer.value());
+  timer.animate(finishValue, { 
+    duration: DURATION_IN_SECONDS * 1000 * valueDiff
+  }, function(){
     new Audio(ALARM_SOUND_FILE).play();
   });
 }
@@ -70,9 +109,9 @@ var stopTimer = function(){
   timer.stop();
 }
 
-var oldSliderDeg=null;
+var oldSliderDeg = null;
 var countainerMousedown = false;
-$timerContainer
+$timerDisk
   .bind('mousedown touchstart', function(e) {
     countainerMousedown = true;
     stopTimer();
@@ -80,19 +119,18 @@ $timerContainer
   })
   .bind('mousemove touchmove', function(e) {
     if (countainerMousedown) {
-      var containerOffset = $timerContainer.offset();
+      var containerOffset = $timerDisk.offset();
       var movePos = {
         x: (e.pageX||e.originalEvent.touches[0].pageX)- containerOffset.left,
         y: (e.pageY||e.originalEvent.touches[0].pageY) - containerOffset.top
       };
-      var containerRadius = $timerContainer.width() / 2;
+      var containerRadius = $timerDisk.width() / 2;
       var atan = Math.atan2(movePos.x - containerRadius, movePos.y - containerRadius);
-      var deg = -atan / (Math.PI / 180) + 180;
+      var deg = -atan / (Math.PI / 180.0) + 180.0;
 
       if (oldSliderDeg === null ||  Math.abs(deg - oldSliderDeg) <= 60){
-        console.log(Math.abs(deg - oldSliderDeg));
         setTimer(deg);
-        oldSliderDeg=deg;
+        oldSliderDeg = deg;
       }
     }
   })
@@ -100,6 +138,8 @@ $timerContainer
     countainerMousedown = false;
     startTimer();
   });
+
+$timerTime.bind('mousedown touchstart', toggleTimerType);
 
 // Initial Time
 timer.animate(10/60, startTimer);
