@@ -79,9 +79,7 @@ var timer = new ProgressBar.Circle($timerDisk.get(0), {
   step: function(state, circle) {
     circle.path.setAttribute('stroke', state.color);
     var deg = circle.value() * 360;
-    
     setSliderOrientation(deg);
-    
     
     var valueSeconds = Math.round(circle.value() * DURATION_IN_SECONDS);
     if(valueSeconds != circle.valueSeconds){
