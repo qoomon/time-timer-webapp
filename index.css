@@ -18,6 +18,7 @@ div {
   margin: auto;
   margin-top: 10vh;
   color: #8e8d8d;
+  border-radius: 50%;
 }
 
 #timerDisk {
