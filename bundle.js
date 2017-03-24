@@ -39,11 +39,16 @@ function toggleTimerType(){
     transform: 'scaleX(' + scaleX +')'
   });
   
+  $timerTime.css({ animation: 'none' });
+  setTimeout(function() { $timerTime.css({ animation: '' }); });
+  
+  $timerDirection.css({ animation: 'none' });
+  setTimeout(function() { $timerDirection.css({ animation: '' }); });
+  
   $timerDirection.css({ 
-    transform: 'scaleX(' + scaleX + ')',
     backgroundImage: 'url(' + directionImage + ')'
   });
-  
+
   startTimer();
 }
 
@@ -140,7 +145,7 @@ $timerDisk
     startTimer();
   });
 
-$timerTime.bind('mousedown touchstart', toggleTimerType);
+$timerTime.bind('click tap', toggleTimerType);
 
 // Initial Time
 timer.animate(10/60, startTimer);
