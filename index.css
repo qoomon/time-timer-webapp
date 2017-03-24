@@ -7,10 +7,10 @@ div {
 
 #timerContainer {
   position: relative;
-  width: 512px;
-  max-width: 90vw;
+  width: 80vmin;
+  height: 80vmin;
   margin: auto;
-  margin-top: 96px;
+  margin-top: 10vh;
   color: #8e8d8d;
 }
 
@@ -66,10 +66,10 @@ div {
   height: 20%;
   left: 40%;
   top: 40%;
-  padding-top: 7.3%;
+  padding-top: 8%;
   text-align: center;
   font-family: 'Helvetica';
-  font-size: 190%;
+  font-size: 4.5vmin;
   border-radius: 50%;
 }
 
