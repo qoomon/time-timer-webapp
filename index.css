@@ -43,7 +43,7 @@ div {
 #timerBarEnd {
   position: absolute;
   width: 8px;
-  height: calc(36% + 3px);
+  height: 37.5%;
   z-index: 2;
   background: #292929;
 }
