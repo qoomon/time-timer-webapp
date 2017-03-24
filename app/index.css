@@ -36,7 +36,7 @@ div {
   left: 50%;
   z-index: 2;
   background: #292929;
-  box-shadow: -6px 3px 15px 8px rgba(0,0,0,0.5);
+  box-shadow: -6px -7px 15px 8px rgba(0,0,0,0.5);
   clip: rect(-53px 6px 1000 -1000px);
 }
 
