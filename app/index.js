@@ -18,6 +18,8 @@ var $timerBarEnd = $('#timerBarEnd');
 var $timerTime = $('#timerTime');
 var $timerDirection = $('#timerDirection');
 
+var timerLastDegree = 0;
+
 var timerType = "countdown";
 function toggleTimerType(){
   var scaleX;
@@ -38,29 +40,46 @@ function toggleTimerType(){
     transform: 'scaleX(' + scaleX +')'
   });
   
+  $timerTime.css({ animation: 'none' });
+  setTimeout(function() { $timerTime.css({ animation: '' }); });
+  
+  $timerDirection.css({ animation: 'none' });
+  setTimeout(function() { $timerDirection.css({ animation: '' }); });
+  
   $timerDirection.css({ 
-    transform: 'scaleX(' + scaleX + ')',
     backgroundImage: 'url(' + directionImage + ')'
   });
-  
+
+  timerLastDegree = 360.0 - timerLastDegree;
+
   startTimer();
 }
 
-var setSliderOrientation = function(deg){
-  var containerRadius = $timerDisk.width() / 2;
-  var pos = {
-    x: - Math.sin(deg * Math.PI / 180) * (containerRadius - 10) + containerRadius,
-    y: - Math.cos(deg * Math.PI / 180) * (containerRadius - 10) + containerRadius
-  }
+var updateTimerBar = function(timer, state){
+  timer.path.setAttribute('stroke', state.color);
+  
+  var containerRadius = $timerDisk.width() / 2.0;
+  var rotation = timer.value() * 360.0;
+  var position = {
+    x: - Math.sin(rotation * Math.PI / 180.0) * containerRadius + containerRadius,
+    y: - Math.cos(rotation * Math.PI / 180.0) * containerRadius + containerRadius
+  };
   $timerBarEnd.css({ 
     transformOrigin: 'top',
-    transform: 'translate(' + (pos.x - $timerBarEnd.width() / 2) + 'px,' + pos.y + 'px)' + ' rotate(' + -deg + 'deg)'
+    transform: 'translate(' + (position.x - $timerBarEnd.width() / 2.0) + 'px,' + position.y + 'px)' + ' rotate(' + -rotation + 'deg)'
   });
   $timerBarKnob.css({ 
-    transform: 'translate(' + (pos.x - $timerBarKnob.width() / 2 )+ 'px,' + (pos.y - $timerBarKnob.height() / 2) + 'px)' 
+    transform: 'translate(' + (position.x - $timerBarKnob.width() / 2.0) + 'px,' + (position.y - $timerBarKnob.height() / 2.0) + 'px)' 
   });
 }
 
+var updateTimerTime = function(timer, state){
+  var valueSeconds = Math.round(timer.value() * DURATION_IN_SECONDS);
+  if(valueSeconds != timer.valueSeconds){
+    $timerTime.text(seconds2Date(valueSeconds).toISOString().substr(14, 5));
+    timer.valueSeconds = valueSeconds;
+  }
+}
 
 var timer = new ProgressBar.Circle($timerDisk.get(0), {
   color: 'inherit', // inherit to support css styling
@@ -68,29 +87,17 @@ var timer = new ProgressBar.Circle($timerDisk.get(0), {
   trailColor: 'inherit', // inherit to support css styling
   strokeWidth: 37,
   duration: 1 * 1000,
-  from: { 
-    color: '#c11535',
-  },
-  to: { 
-    color: '#a21630',
-  },
-  // Set default step function for all animate calls
-  step: function(state, circle) {
-    circle.path.setAttribute('stroke', state.color);
-    var deg = circle.value() * 360;
-    setSliderOrientation(deg);
-    
-    var valueSeconds = Math.round(circle.value() * DURATION_IN_SECONDS);
-    if(valueSeconds != circle.valueSeconds){
-      $timerTime.text(seconds2Date(valueSeconds).toISOString().substr(14, 5));
-      circle.valueSeconds = valueSeconds;
-    }
+  from: { color: '#c11535' },
+  to:   { color: '#a21630' },
+  step: function(state, timer) {
+    updateTimerBar(timer, state);
+    updateTimerTime(timer, state);
   }
 });
 timer.svg.style.transform= 'scale(-1, 1)';
 
 var setTimer = function(deg){
-  var startValue = timerType == "countdown" ? 1.0 : 0.0;
+  var startValue = timerType == "countdown" ? 0.0 : 1.0;
   var newValue = Math.abs(startValue - (deg / 360.0));
   timer.set(newValue);
 }
@@ -109,7 +116,6 @@ var stopTimer = function(){
   timer.stop();
 }
 
-var oldSliderDeg = null;
 var countainerMousedown = false;
 $timerDisk
   .bind('mousedown touchstart', function(e) {
@@ -126,12 +132,17 @@ $timerDisk
       };
       var containerRadius = $timerDisk.width() / 2;
       var atan = Math.atan2(movePos.x - containerRadius, movePos.y - containerRadius);
-      var deg = -atan / (Math.PI / 180.0) + 180.0;
+      var deg = atan / (Math.PI / 180.0) + 180.0;
 
-      if (oldSliderDeg === null ||  Math.abs(deg - oldSliderDeg) <= 60){
-        setTimer(deg);
-        oldSliderDeg = deg;
-      }
+      var targetDeg = deg;
+      if (timerLastDegree < 90.0 && deg > 270.0 ){
+        targetDeg = 0.0;
+      } else if (timerLastDegree > 270.0 && deg < 90.0 ){
+        targetDeg = 360.0;
+      } 
+      
+      timerLastDegree = targetDeg;
+      setTimer(targetDeg);
     }
   })
   .bind('mouseup touchend', function(e) {
@@ -139,8 +150,11 @@ $timerDisk
     startTimer();
   });
 
-$timerTime.bind('mousedown touchstart', toggleTimerType);
+$timerTime.bind('click tap', toggleTimerType);
 
-// Initial Time
-timer.animate(10/60, startTimer);
+// Initial Time 10 Minutes
+timer.animate(60/360, function() {
+  setTimer(60);
+  startTimer();
+});
 
