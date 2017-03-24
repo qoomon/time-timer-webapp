@@ -66,7 +66,7 @@ div {
   height: 20%;
   left: 40%;
   top: 40%;
-  padding-top: calc(10% - 1rem + 2px);
+  padding-top: 8.5%;
   text-align: center;
   font-family: 'Helvetica';
   font-size: 2rem;
@@ -75,14 +75,13 @@ div {
 
 #timerDirection {
   position: absolute;
-  width: 16px;
-  height: 16px;
-  left: calc(50% - 8px);
-  top: calc(40% - 8px + 24px);
+  width: 3%;
+  height: 3%;
+  left: calc(50% - 1.5%);
+  top: calc(40% - -3.5%);
   background-image: url("count_down.png");
   background-size: contain;
   background-repeat: no-repeat;
   transform: scaleX(1);
   transition: all 1.5s cubic-bezier(.42,0,.58,1);
 }
-
