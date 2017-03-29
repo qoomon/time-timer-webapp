@@ -1,14 +1,9 @@
 body {
   background-color: #222
 }
+
 div {
   box-sizing: border-box;
-}
-
-@keyframes transitionScaleX {
-  0%   { transform: scaleX(1); }
-  50%  { transform: scaleX(0); }
-  100% { transform: scaleX(1); }
 }
 
 #timerContainer {
@@ -27,8 +22,6 @@ div {
   border-width: 5px;
   border-style: solid;
   border-color: hsl(0, 0%, 16%);
-  transform: scaleX(1);
-  transition: all 1.5s cubic-bezier(.42,0,.58,1);
 }
 
 #timerDiskHole {
@@ -42,8 +35,7 @@ div {
   box-shadow: inset 0px 0px 20px 5px rgba(0,0,0,0.5);
   border-style: solid;
   border-color: rgb(40, 40, 40);
-  border-width: 4px;
-  z-index: 3;
+  border-width: 5px;
 }
 
 #timerDisk > svg > path:nth-child(1) {
@@ -54,9 +46,8 @@ div {
   position: absolute;
   width: 100px;
   height: calc(40% + 5px);
-  top: -5px;
+  top: 0px;
   left: 50%;
-  z-index: 2;
   background: #292929;
   box-shadow: -15px 3px 20px 1px rgba(0,0,0,0.5);
   clip: rect(-53px 6px 1000 -1000px);
@@ -65,8 +56,7 @@ div {
 #timerBarEnd {
   position: absolute;
   width: 8px;
-  height: 38.5%;
-  z-index: 2;
+  height: 39%;
   background: #292929;
 }
 
@@ -74,7 +64,6 @@ div {
   position: absolute;
   height: 32px;
   width: 32px;
-  z-index: 3;
   background-color: #b3b3b3;
   border-radius: 50%;
   cursor: pointer;
@@ -93,8 +82,7 @@ div {
   font-family: 'Helvetica';
   font-size: 4.5vmin;
   border-radius: 50%;
-  animation: transitionScaleX 1.5s;
-  animation-timing-function: cubic-bezier(.42,0,.58,1);
+  cursor: pointer;
 }
 
 #timerDirection {
@@ -106,7 +94,4 @@ div {
   background-image: url("count_down.png");
   background-size: contain;
   background-repeat: no-repeat;
-  transition: all 1.5s cubic-bezier(.42,0,.58,1);
-  animation: transitionScaleX 1.5s;
-  animation-timing-function: cubic-bezier(.42,0,.58,1);
 }

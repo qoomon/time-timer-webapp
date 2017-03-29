@@ -3,7 +3,8 @@
 var DURATION_IN_SECONDS = 60 * 60; // 60 minutes
 var ALARM_SOUND_FILE = 'alarm.mp3';
 
-var $ = require('jquery');
+var $ = global.$ = window.$ = global.jQuery = window.jQuery = require('jquery');
+require('jquery-ui-effects');
 var ProgressBar = require('progressbar.js');
 
 function seconds2Date(seconds){
@@ -12,6 +13,7 @@ function seconds2Date(seconds){
   return date;
 }
 
+var $timerContainer = $('#timerContainer');
 var $timerDisk = $('#timerDisk');
 var $timerBarKnob = $('#timerBarKnob');
 var $timerBarEnd = $('#timerBarEnd');
@@ -22,34 +24,43 @@ var timerLastDegree = 0;
 
 var timerType = "countdown";
 function toggleTimerType(){
-  var scaleX;
   var rotate;
   var directionImage;
   if(timerType == "countdown") {
     timerType = "countup";
-    scaleX = -1;
-    rotate = 360.0;
+    rotate = 180.0;
     directionImage = 'count_up.png';
   } else {
     timerType = "countdown";
-    scaleX = 1;
     rotate = 0.0;
     directionImage = 'count_down.png';
   }
-  $timerDisk.css({ 
-    transform: 'scaleX(' + scaleX +')'
-  });
-  
-  $timerTime.css({ animation: 'none' });
-  setTimeout(function() { $timerTime.css({ animation: '' }); });
-  
-  $timerDirection.css({ animation: 'none' });
-  setTimeout(function() { $timerDirection.css({ animation: '' }); });
-  
-  $timerDirection.css({ 
-    backgroundImage: 'url(' + directionImage + ')'
-  });
 
+  var animation_transform_rotateY = { 
+    duration: 1500, 
+    easing: 'easeOutBack',
+    step: function(now, tween) {
+      if (tween.prop === 'transform_rotateY') {
+        $(this).css('transform','rotateY(' + now +'deg)' );
+      }
+    }
+  };
+  
+  $timerContainer.animate({ transform_rotateY: rotate }, animation_transform_rotateY);
+  
+  $timerTime.animate({ transform_rotateY: rotate }, animation_transform_rotateY);
+  
+  $timerDirection.animate({ transform_rotateY: rotate }, animation_transform_rotateY);
+  $timerDirection.animate({ dummy: rotate }, { queue: false,
+    duration: animation_transform_rotateY.duration, 
+    easing: animation_transform_rotateY.easing,
+    step: function(now, tween) {
+      if(tween.pos >= 0.5){
+        $timerDirection.css({ backgroundImage: 'url(' + directionImage + ')' });  
+      } 
+    }
+  });
+  
   timerLastDegree = 360.0 - timerLastDegree;
 
   startTimer();
@@ -58,11 +69,11 @@ function toggleTimerType(){
 var updateTimerBar = function(timer, state){
   timer.path.setAttribute('stroke', state.color);
   
-  var containerRadius = $timerDisk.width() / 2.0;
+  var containerRadius = $timerDisk.outerWidth() / 2.0;
   var rotation = timer.value() * 360.0;
   var position = {
     x: - Math.sin(rotation * Math.PI / 180.0) * containerRadius + containerRadius,
-    y: - Math.cos(rotation * Math.PI / 180.0) * containerRadius + containerRadius
+    y: - Math.cos(rotation * Math.PI / 180.0) * containerRadius - containerRadius
   };
   $timerBarEnd.css({ 
     transformOrigin: 'top',
@@ -117,7 +128,7 @@ var stopTimer = function(){
 }
 
 var countainerMousedown = false;
-$timerDisk
+$timerContainer
   .bind('mousedown touchstart', function(e) {
     countainerMousedown = true;
     stopTimer();
@@ -125,12 +136,12 @@ $timerDisk
   })
   .bind('mousemove touchmove', function(e) {
     if (countainerMousedown) {
-      var containerOffset = $timerDisk.offset();
+      var containerOffset = $timerContainer.offset();
       var movePos = {
         x: (e.pageX||e.originalEvent.touches[0].pageX)- containerOffset.left,
         y: (e.pageY||e.originalEvent.touches[0].pageY) - containerOffset.top
       };
-      var containerRadius = $timerDisk.width() / 2;
+      var containerRadius = $timerContainer.width() / 2;
       var atan = Math.atan2(movePos.x - containerRadius, movePos.y - containerRadius);
       var deg = atan / (Math.PI / 180.0) + 180.0;
 
