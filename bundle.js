@@ -130,7 +130,7 @@ var stopTimer = function(){
 }
 
 var countainerMousedown = false;
-$timerDisk
+$timerContainer
   .bind('mousedown touchstart', function(e) {
     countainerMousedown = true;
     stopTimer();
@@ -138,12 +138,12 @@ $timerDisk
   })
   .bind('mousemove touchmove', function(e) {
     if (countainerMousedown) {
-      var containerOffset = $timerDisk.offset();
+      var containerOffset = $timerContainer.offset();
       var movePos = {
         x: (e.pageX||e.originalEvent.touches[0].pageX)- containerOffset.left,
         y: (e.pageY||e.originalEvent.touches[0].pageY) - containerOffset.top
       };
-      var containerRadius = $timerDisk.width() / 2;
+      var containerRadius = $timerContainer.width() / 2;
       var atan = Math.atan2(movePos.x - containerRadius, movePos.y - containerRadius);
       var deg = atan / (Math.PI / 180.0) + 180.0;
 
