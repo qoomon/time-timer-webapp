@@ -19,7 +19,7 @@
     "browser-sync": "^2.18.8",
     "browserify": "^14.1.0",
     "del": "^2.2.2",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-sequence": "^0.4.6",
     "packageify": "^1.0.0",
     "vinyl-buffer": "^1.0.0",
