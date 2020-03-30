@@ -15,7 +15,7 @@
     "progressbar.js": "^1.0.1"
   },
   "devDependencies": {
-    "brfs": "^1.4.3",
+    "brfs": "^2.0.2",
     "browser-sync": "^2.18.8",
     "browserify": "^14.1.0",
     "del": "^2.2.2",
