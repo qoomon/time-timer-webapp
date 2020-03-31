@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e -u -o pipefail
 
 GITHUB_REPOSITORY_URI="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
@@ -22,13 +22,10 @@ git config user.name "GitHub Actions"
 git config user.email "<>"
 
 echo ''
-echo "--- Apply changes from ${GITHUB_PAGES_SOURCE_DIR} directory"
+echo "--- Commit changes from ${GITHUB_PAGES_SOURCE_DIR} directory"
 git rm -r --quiet .
 cp -a -R "../${GITHUB_PAGES_SOURCE_DIR}/" './'
 git add .
-
-echo ''
-echo "--- Commit changes"
 if git commit -am "${COMMIT_MESSAGE}" -m "${COMMIT_DETAILS}" --quiet
 then
     git show --name-status --format=format:
@@ -46,6 +43,4 @@ then
       git branch -m "${GITHUB_PAGES_BRANCH}"  # Rename the temporary branch to GITHUB_PAGES_BRANCH
       git push --force 'origin' "${GITHUB_PAGES_BRANCH}" # Force push GITHUB_PAGES_BRANCH branch
     fi
-else
-  echo 'No Changes'
 fi

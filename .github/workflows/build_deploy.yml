@@ -20,15 +20,16 @@ jobs:
       with:
         node-version: 13.x
     - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
-      env:
-        CI: true
+    - run: npm run build
+    # - run: npm test
+    #   env:
+    #     CI: true
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/master'
-      run: deploy-to-gh-pages.sh
+      run: scripts/deploy-to-gh-pages.sh
       env:
         GITHUB_PAGES_SOURCE_DIR: dist
         GITHUB_PAGES_BRANCH: gh-pages
         GITHUB_PAGES_REPLACE: false
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   

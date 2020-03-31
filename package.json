@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "gulp build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Warn: no test specified\" && exit 1",
     "serve": "gulp serve"
   },
   "author": "",
@@ -20,7 +20,6 @@
     "browserify": "^16.5.1",
     "del": "^5.1.0",
     "gulp": "^4.0.2",
-    "gulp-sequence": "^1.0.0",
     "packageify": "^1.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^2.0.0"

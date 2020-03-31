@@ -1,86 +1,82 @@
 const gulp = require('gulp');
-// const gulpThrough = require('through2');
-const gulpSequence = require('gulp-sequence');
-// const gulpMerge = require('merge2');
-
-// const gulpConcat = require('gulp-concat');
-// const gulpWrap = require('gulp-wrapper');
-// const gulpUglify = require('gulp-uglify');
-// const gulpSourcemaps = require('gulp-sourcemaps');
 const gulpDel = require('del');
-
-var browserify = require('browserify');
-var browserSync = require('browser-sync').create();
-
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-
-// const Fs = require('fs');
-// const Path = require('path');
+const browserify = require('browserify');
+const browserSync = require('browser-sync').create();
+const source = require('vinyl-source-stream');
 
 const destDir = 'dist/';
 
-gulp.task('clean', function () {
-    return gulpDel([destDir]);
+gulp.task('clean', function() {
+  return gulpDel([destDir]);
 });
 
+gulp.task('copy-resources',
+  function() {
+    return gulp.src([
+        'app/favicon.ico',
+        'app/*.png',
+        'app/*.mp3'
+      ])
+      .pipe(gulp.dest(destDir + '/'));
+  }
+);
 
-gulp.task('buildReload', ['build'], function (callback) {
+
+gulp.task('build-js',
+  function() {
+    return browserify({
+        entries: [
+          'app/index.js'
+        ],
+        transform: [
+          "packageify",
+          "brfs"
+        ]
+      })
+      .bundle()
+      .pipe(source('bundle.js'))
+      .pipe(gulp.dest(destDir));
+  }
+);
+
+gulp.task('build-html',
+  function() {
+    return gulp.src('app/**/*.html')
+      .pipe(gulp.dest(destDir + '/'));
+  }
+);
+
+gulp.task('build-css',
+  function() {
+    return gulp.src('app/**/*.css')
+      .pipe(gulp.dest(destDir + '/'));
+  }
+);
+
+gulp.task('build', gulp.series(
+  'clean',
+  'copy-resources',
+  'build-css',
+  'build-js',
+  'build-html'
+));
+
+gulp.task('buildReload', gulp.series(
+  'build',
+  function(callback) {
     browserSync.reload();
     callback();
-});
+  }
+));
 
-gulp.task('serve', ['build'], function () {
+gulp.task('serve', gulp.series(
+  'build',
+  function() {
     browserSync.init({
-        server: {
-            baseDir: "./dist"
-        }
+      server: {
+        baseDir: "./dist"
+      }
     });
     gulp.watch('app/**/*', ['buildReload']);
-});
-
-gulp.task('build', ['clean'], function (callback) {
-    gulpSequence( 
-        [
-            'copy-resources',
-            'build-css',
-            'build-js',
-            'build-html'
-        ],
-        callback);
-});
-
-gulp.task('build-js', function () {
-     return browserify({
-            entries: [
-              'app/index.js'
-            ],
-            transform: [
-                  "packageify",
-                  "brfs"
-            ]
-        })
-        .bundle()
-        .pipe(source('bundle.js'))
-        .pipe(gulp.dest(destDir));
-});
-
-gulp.task('build-html', function () {
-    return gulp.src('app/**/*.html')
-        .pipe(gulp.dest(destDir + '/'));
-});
-
-gulp.task('build-css', function () {
-    return gulp.src('app/**/*.css')
-        .pipe(gulp.dest(destDir + '/'));
-});
-
-gulp.task('copy-resources', function () {
-    return gulp.src([
-        'app/favicon.ico', 
-        'app/*.png', 
-        'app/*.mp3'])
-      .pipe(gulp.dest(destDir + '/'));
-});
-
-
+  }
+));
