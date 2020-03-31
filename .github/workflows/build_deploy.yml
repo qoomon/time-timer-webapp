@@ -24,3 +24,11 @@ jobs:
     - run: npm test
       env:
         CI: true
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/master'
+      run: deploy-to-gh-pages.sh
+      env:
+        GITHUB_PAGES_SOURCE_DIR: dist
+        GITHUB_PAGES_BRANCH: gh-pages
+        GITHUB_PAGES_REPLACE: false
+  
