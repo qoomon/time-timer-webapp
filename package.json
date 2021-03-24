@@ -18,7 +18,7 @@
     "brfs": "^2.0.2",
     "browser-sync": "^2.26.14",
     "browserify": "^16.5.2",
-    "del": "^5.1.0",
+    "del": "^6.0.0",
     "gulp": "^4.0.2",
     "packageify": "^1.0.0",
     "vinyl-buffer": "^1.0.0",
