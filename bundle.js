@@ -3,7 +3,7 @@
 "use strict";
 
 var DURATION_IN_SECONDS = 60 * 60; // 60 minutes
-var ALARM_SOUND_FILE = 'alarm.mp3';
+var ALARM_SOUND = new Audio('alarm.mp3');
 
 var $ = global.$ = window.$ = global.jQuery = window.jQuery = require('jquery');
 require('jquery-ui-effects');
@@ -121,7 +121,7 @@ var startTimer = function(){
   timer.animate(finishValue, { 
     duration: DURATION_IN_SECONDS * 1000 * valueDiff
   }, function(){
-    new Audio(ALARM_SOUND_FILE).play();
+    ALARM_SOUND.play();
   });
 }
 
