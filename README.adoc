@@ -8,4 +8,3 @@ Grade, link="https://lgtm.com/projects/g/qoomon/time-timer-webapp"]
 
 === Screenshot
 image:docs/Screenshot.png[width=100%, link="https://qoomon.github.io/time-timer-webapp"]
-
