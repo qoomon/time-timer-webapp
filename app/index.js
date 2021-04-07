@@ -92,6 +92,7 @@ var updateTimerTime = function(timer, state){
   }
 }
 
+var timerTimeout = 0
 var timer = new ProgressBar.Circle($timerDisk.get(0), {
   color: 'inherit', // inherit to support css styling
   trailWidth: 40,
@@ -116,14 +117,15 @@ var setTimer = function(deg){
 var startTimer = function(){
   var finishValue = timerType == "countdown" ? 0.0 : 1.0;
   var valueDiff = Math.abs(finishValue - timer.value());
-  timer.animate(finishValue, { 
-    duration: DURATION_IN_SECONDS * 1000 * valueDiff
-  }, function(){
+  var duration = DURATION_IN_SECONDS * 1000 * valueDiff;
+  timer.animate(finishValue, { duration });
+  timerTimeout = setTimeout(function(){
     ALARM_SOUND.play();
-  });
+  }, duration)
 }
 
 var stopTimer = function(){
+  clearTimeout(timerTimeout);
   timer.stop();
 }
 
@@ -168,4 +170,3 @@ timer.animate(60/360, function() {
   setTimer(60);
   startTimer();
 });
-
