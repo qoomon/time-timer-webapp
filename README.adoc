@@ -7,5 +7,5 @@ https://lgtm.com/projects/g/qoomon/time-timer-webapp[image:https://img.shields.i
 Grade]]
 
 === Screenshot
-​image:docs/Screenshot.png[width=100%]
+image:docs/Screenshot.png[width=100%,link="https://qoomon.github.io/time-timer-webapp"]
 
