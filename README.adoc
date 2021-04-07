@@ -1,11 +1,11 @@
 == time-timer-webapp
 
-https://github.com/qoomon/time-timer-webapp/actions[image:https://github.com/qoomon/time-timer-webapp/workflows/Build%20&%20Deploy/badge.svg[Build
-& Deploy]]
+image:https://github.com/qoomon/time-timer-webapp/workflows/Build%20&%20Deploy/badge.svg[Build
+& Deploy, link="https://github.com/qoomon/time-timer-webapp/actions"]
 
-https://lgtm.com/projects/g/qoomon/time-timer-webapp[image:https://img.shields.io/lgtm/grade/javascript/github/qoomon/time-timer-webapp[LGTM
-Grade]]
+image:https://img.shields.io/lgtm/grade/javascript/github/qoomon/time-timer-webapp[LGTM
+Grade, link="https://lgtm.com/projects/g/qoomon/time-timer-webapp"]
 
 === Screenshot
-image:docs/Screenshot.png[width=100%,link="https://qoomon.github.io/time-timer-webapp"]
+image:docs/Screenshot.png[width=100%, link="https://qoomon.github.io/time-timer-webapp"]
 
