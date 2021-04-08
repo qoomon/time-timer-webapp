@@ -12,7 +12,6 @@ div {
   height: 80vmin;
   margin: auto;
   margin-top: 10vh;
-  color: #8e8d8d;
   border-radius: 50%;
 }
 
@@ -76,22 +75,73 @@ div {
   width: 20%;
   height: 20%;
   left: 40%;
-  top: 40%;
+  top: 39%;
   padding-top: 8%;
   text-align: center;
   font-family: 'Helvetica';
-  font-size: 4.5vmin;
+  font-size: 4.0vmin;
   border-radius: 50%;
+  color: #444444;
+}
+
+#optionButtons {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 16px;
+}
+
+#optionButtons > div {
+  position: relative;
+  height: 32px;
+  width: 32px;
+  margin: 0 8px;
   cursor: pointer;
 }
 
-#timerDirection {
-  position: absolute;
-  width: 3%;
-  height: 3%;
-  left: calc(50% - 1.5%);
-  top: calc(40% - -3.5%);
-  background-image: url("count_down.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+#optionButtons > div > img {
+  height: 100%;
+  width: 100%;
+  filter: invert(70%);
 }
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  transform: translateY(-100%);
+}
+
+.dropdown-content > a {
+  display: block;
+  position: relative;
+  padding: 12px 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left: auto;
+  margin-right: 0;
+
+  background-color: #b3b3b3;
+  color: #1c1c1c;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.dropdown-content > a:hover {
+  background-color: #ddd;
+}
+
