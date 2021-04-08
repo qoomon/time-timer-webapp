@@ -13,14 +13,12 @@ gulp.task('clean', function() {
 gulp.task('copy-resources',
   function() {
     return gulp.src([
-        'app/favicon.ico',
-        'app/*.png',
-        'app/*.mp3'
-      ])
+        'app/graphics/*',
+        'app/sounds/*'
+      ], {base: 'app/'})
       .pipe(gulp.dest(destDir + '/'));
   }
 );
-
 
 gulp.task('build-js',
   function() {
@@ -61,22 +59,25 @@ gulp.task('build', gulp.series(
   'build-html'
 ));
 
-gulp.task('buildReload', gulp.series(
-  'build',
-  function(callback) {
-    browserSync.reload();
-    callback();
-  }
-));
-
 gulp.task('serve', gulp.series(
   'build',
-  function() {
+  action(() => {
     browserSync.init({
       server: {
         baseDir: "./dist"
       }
     });
-    gulp.watch('app/**/*', ['buildReload']);
-  }
+    
+    gulp.watch('app/**', gulp.series(
+      'build',
+      action(browserSync.reload) 
+    ));
+  })
 ));
+
+function action(task) {
+  return (done) => {
+    task();
+    done();
+  }
+}

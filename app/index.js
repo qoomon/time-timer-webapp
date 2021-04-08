@@ -1,7 +1,6 @@
 "use strict";
 
 var DURATION_IN_SECONDS = 60 * 60; // 60 minutes
-var ALARM_SOUND = new Audio('alarm.mp3');
 
 var $ = global.$ = window.$ = global.jQuery = window.jQuery = require('jquery');
 require('jquery-ui-effects');
@@ -19,6 +18,7 @@ var $timerBarKnob = $('#timerBarKnob');
 var $timerBarEnd = $('#timerBarEnd');
 var $timerTime = $('#timerTime');
 var $timerDirection = $('#timerDirection');
+var $timerAlarmSelector = $('#timerAlarmSelector');
 
 var timerLastDegree = 0;
 
@@ -29,12 +29,14 @@ function toggleTimerType(){
   if(timerType == "countdown") {
     timerType = "countup";
     rotate = 180.0;
-    directionImage = 'count_up.png';
+    directionImage = 'graphics/countup.svg';
   } else {
     timerType = "countdown";
     rotate = 0.0;
-    directionImage = 'count_down.png';
+    directionImage = 'graphics/countdown.svg';
   }
+
+  $timerDirection.find('img').attr("src", directionImage);
 
   var animation_transform_rotateY = { 
     duration: 1500, 
@@ -47,26 +49,17 @@ function toggleTimerType(){
   };
   
   $timerContainer.animate({ transform_rotateY: rotate }, animation_transform_rotateY);
-  
   $timerTime.animate({ transform_rotateY: rotate }, animation_transform_rotateY);
   
-  $timerDirection.animate({ transform_rotateY: rotate }, animation_transform_rotateY);
-  $timerDirection.animate({ dummy: rotate }, { queue: false,
-    duration: animation_transform_rotateY.duration, 
-    easing: animation_transform_rotateY.easing,
-    step: function(now, tween) {
-      if(tween.pos >= 0.5){
-        $timerDirection.css({ backgroundImage: 'url(' + directionImage + ')' });  
-      } 
-    }
-  });
+  
+  
   
   timerLastDegree = 360.0 - timerLastDegree;
 
   startTimer();
 }
 
-var updateTimerBar = function(timer, state){
+function updateTimerBar(timer, state){
   timer.path.setAttribute('stroke', state.color);
   
   var containerRadius = $timerDisk.outerWidth() / 2.0;
@@ -84,7 +77,7 @@ var updateTimerBar = function(timer, state){
   });
 }
 
-var updateTimerTime = function(timer, state){
+function updateTimerTime(timer, state){
   var valueSeconds = Math.round(timer.value() * DURATION_IN_SECONDS);
   if(valueSeconds != timer.valueSeconds){
     $timerTime.text(seconds2Date(valueSeconds).toISOString().substr(14, 5));
@@ -92,7 +85,7 @@ var updateTimerTime = function(timer, state){
   }
 }
 
-var timerTimeout = 0
+var timerAlarmSound = new Audio('sounds/alarm_digital.mp3');
 var timer = new ProgressBar.Circle($timerDisk.get(0), {
   color: 'inherit', // inherit to support css styling
   trailWidth: 40,
@@ -108,25 +101,29 @@ var timer = new ProgressBar.Circle($timerDisk.get(0), {
 });
 timer.svg.style.transform= 'scale(-1, 1)';
 
-var setTimer = function(deg){
+function startTimer(){
+  var finishValue = timerType == "countdown" ? 0.0 : 1.0;
+  var valueDiff = Math.abs(finishValue - timer.value());
+  var duration = DURATION_IN_SECONDS * 1000 * valueDiff;
+  timer.animate(finishValue, { duration });
+  timer.timeout = setTimeout(function(){
+    timerAlarmSound.play();
+  }, duration);
+}
+
+function stopTimer(){
+  clearTimeout(timer.timeout);
+  timer.stop();
+}
+
+function setTimer(deg){
   var startValue = timerType == "countdown" ? 0.0 : 1.0;
   var newValue = Math.abs(startValue - (deg / 360.0));
   timer.set(newValue);
 }
 
-var startTimer = function(){
-  var finishValue = timerType == "countdown" ? 0.0 : 1.0;
-  var valueDiff = Math.abs(finishValue - timer.value());
-  var duration = DURATION_IN_SECONDS * 1000 * valueDiff;
-  timer.animate(finishValue, { duration });
-  timerTimeout = setTimeout(function(){
-    ALARM_SOUND.play();
-  }, duration)
-}
-
-var stopTimer = function(){
-  clearTimeout(timerTimeout);
-  timer.stop();
+function setTimerAlarmSound(sound){
+  timerAlarmSound = new Audio(`sounds/alarm_${sound}.mp3`);
 }
 
 var countainerMousedown = false;
@@ -163,8 +160,10 @@ $timerContainer
     startTimer();
   });
 
-$timerTime.bind('click tap', toggleTimerType);
+$timerDirection.bind('click tap', toggleTimerType);
 
+
+global.setTimerAlarmSound = setTimerAlarmSound
 // Initial Time 10 Minutes
 timer.animate(60/360, function() {
   setTimer(60);
