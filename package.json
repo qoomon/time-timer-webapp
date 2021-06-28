@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "brfs": "^2.0.2",
-    "browser-sync": "^2.26.14",
+    "browser-sync": "^2.27.3",
     "browserify": "^17.0.0",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
