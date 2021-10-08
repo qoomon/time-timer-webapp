@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "jquery": "^3.6.0",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.0",
     "progressbar.js": "^1.0.1"
   },
   "devDependencies": {
