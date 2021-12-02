@@ -1,0 +1,8 @@
+.git*
+docs
+Dockerfile
+.Dockerfile.swp
+README.adoc
+dist
+node_modules
+github-icon.png
