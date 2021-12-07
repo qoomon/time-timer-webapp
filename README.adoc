@@ -9,5 +9,10 @@ Grade, link="https://lgtm.com/projects/g/qoomon/time-timer-webapp"]
 === Demo
 https://qoomon.github.io/time-timer-webapp
 
+=== Docker Instructions
+
+    docker build -t qoomon/time-timer-webapp https://github.com/qoomon/time-timer-webapp.git
+    docker run --rm -p 8080:80 qoomon/time-timer-webapp
+
 === Screenshot
 image:docs/Screenshot.png[width=100%, link="https://qoomon.github.io/time-timer-webapp"]
