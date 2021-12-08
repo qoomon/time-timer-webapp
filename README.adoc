@@ -11,3 +11,12 @@ https://qoomon.github.io/time-timer-webapp
 
 === Screenshot
 image:docs/Screenshot.png[width=100%, link="https://qoomon.github.io/time-timer-webapp"]
+
+=== Docker Instructions
+
+    # initial setup
+    docker build -t qoomon/time-timer-webapp https://github.com/qoomon/time-timer-webapp.git
+    # start the service
+    docker run --rm -p 8080:80 qoomon/time-timer-webapp
+    # open the app in your browser
+    xdg-open "http://localhost:8080"
