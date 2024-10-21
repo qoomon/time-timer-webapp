@@ -185,9 +185,14 @@ $timerContainer
 
 $timerDirection.bind('click tap', toggleTimerType);
 
-// Initial Time 10 Minutes
-timer.animate(60/360, function() {
-  setTimer(60);
+// Initial Time
+var urlParams = new URLSearchParams(window.location.search);
+var initialTimerSeconds = parseInt(urlParams.get('init')) || (10 * 60)
+var initialTimerDeg = initialTimerSeconds / DURATION_IN_SECONDS * 360
+initialTimerDeg = Math.max(initialTimerDeg, 0); 
+initialTimerDeg = Math.min(initialTimerDeg, 360);
+timer.animate(initialTimerDeg/360, function() {
+  setTimer(initialTimerDeg);
   startTimer();
 });
 
