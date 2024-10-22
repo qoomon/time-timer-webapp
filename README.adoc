@@ -3,11 +3,8 @@
 image:https://github.com/qoomon/time-timer-webapp/workflows/Build%20&%20Deploy/badge.svg[Build
 & Deploy, link="https://github.com/qoomon/time-timer-webapp/actions"]
 
-image:https://img.shields.io/lgtm/grade/javascript/github/qoomon/time-timer-webapp[LGTM
-Grade, link="https://lgtm.com/projects/g/qoomon/time-timer-webapp"]
-
 === Demo
-https://qoomon.github.io/time-timer-webapp
+https://qoomon.github.io/time-timer-webapp?init=600
 
 === Screenshot
 image:docs/Screenshot.png[width=100%, link="https://qoomon.github.io/time-timer-webapp"]
