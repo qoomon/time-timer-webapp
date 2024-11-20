@@ -1,4 +1,4 @@
-# time-timer-webapp [![starline](https://github-starline.vercel.app/qoomon/time-timer-webapp)](https://github.com/qoomon/starline)
+# time-timer-webapp [![starline](https://starlines.qoo.monster/assets/qoomon/time-timer-webapp)](https://github.com/qoomon/starlines)
 
 [![Build & Deploy](https://github.com/qoomon/time-timer-webapp/workflows/Build%20&%20Deploy/badge.svg)](https://github.com/qoomon/time-timer-webapp/actions)
 
