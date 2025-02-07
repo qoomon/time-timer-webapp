@@ -12,7 +12,7 @@
   "dependencies": {
     "jquery": "^3.6.0",
     "jquery-ui": "^1.13.2",
-    "progressbar.js": "^1.0.1"
+    "progressbar.js": "^1.1.1"
   },
   "devDependencies": {
     "brfs": "^2.0.2",
