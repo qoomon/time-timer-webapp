@@ -1,13 +1,15 @@
-const gulp = require('gulp');
-const gulpDel = require('del');
-const browserify = require('browserify');
-const browserSync = require('browser-sync').create();
-const source = require('vinyl-source-stream');
+import gulp from 'gulp';
+import {deleteAsync} from 'del'
+import browserify from 'browserify';
+import browserSyncLib from 'browser-sync';
+import source from 'vinyl-source-stream';
+
+const browserSync = browserSyncLib.create();
 
 const destDir = 'dist/';
 
 gulp.task('clean', function() {
-  return gulpDel([destDir]);
+  return deleteAsync([destDir]);
 });
 
 gulp.task('copy-resources',
@@ -24,11 +26,14 @@ gulp.task('build-js',
   function() {
     return browserify({
         entries: [
-          'app/index.js'
+          'app/index.js',
+        ],
+        noParse: [
+            './node_modules/progressbar.js/dist/progressbar.js',
         ],
         transform: [
           "packageify",
-          "brfs"
+          "brfs",
         ]
       })
       .bundle()
