@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jquery": "^3.6.0",
+    "jquery": "^3.7.1",
     "jquery-ui": "^1.13.2",
     "progressbar.js": "^1.0.1"
   },
