@@ -17,7 +17,7 @@ gulp.task('copy-resources',
     return gulp.src([
         'app/graphics/*',
         'app/sounds/*'
-      ], {base: 'app/'})
+      ], {base: 'app/', encoding: false})
       .pipe(gulp.dest(destDir + '/'));
   }
 );
