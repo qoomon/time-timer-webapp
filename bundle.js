@@ -199,7 +199,7 @@ timer.animate(initialTimerDeg/360, function() {
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"jquery":3,"jquery-ui-effects":2,"progressbar.js":6}],2:[function(require,module,exports){
 /*!
- * jQuery UI Effects 1.13.0
+ * jQuery UI Effects 1.13.2
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -602,7 +602,7 @@ if ( $.uiBackCompat !== false ) {
 }
 
 $.extend( $.effects, {
-	version: "1.13.0",
+	version: "1.13.2",
 
 	define: function( name, mode, effect ) {
 		if ( !effect ) {
