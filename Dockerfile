@@ -5,7 +5,7 @@ FROM node:16-alpine as build
 WORKDIR /project
 
 # Copy package.json and package-lock.json to optimize caching
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install
