@@ -1,5 +1,5 @@
 import gulp from 'gulp';
-import {deleteAsync} from 'del'
+import {deleteAsync} from 'del';
 import browserify from 'browserify';
 import browserSyncLib from 'browser-sync';
 import source from 'vinyl-source-stream';
@@ -7,6 +7,7 @@ import source from 'vinyl-source-stream';
 const browserSync = browserSyncLib.create();
 
 const destDir = 'dist/';
+
 
 gulp.task('clean', function() {
   return deleteAsync([destDir]);
