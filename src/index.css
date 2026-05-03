@@ -1,0 +1,37 @@
+:root {
+  --color-bg: #1a1a1a;
+  --color-surface: #242424;
+  --color-track: #2c333f;
+  --color-disk-border: #1a1f26;
+  --color-arc: #c11535;
+  --color-hole: #222;
+  --color-hole-border: #111;
+  --color-knob: #b3b3b3;
+  --color-text: #e0e0e0;
+  --color-text-dim: #666;
+  --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}

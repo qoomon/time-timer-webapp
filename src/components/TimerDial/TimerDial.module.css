@@ -1,0 +1,26 @@
+.dial {
+  width: 80vmin;
+  height: 80vmin;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.6));
+}
+
+.timeText {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  fill: var(--color-text-dim);
+  pointer-events: none;
+  letter-spacing: 0.5px;
+}
+
+.knob {
+  fill: var(--color-knob);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+  cursor: grab;
+}
+
+.knob:active {
+  cursor: grabbing;
+}
