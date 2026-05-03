@@ -16,7 +16,7 @@ function getInitialValue(): number {
 }
 
 export default function App() {
-  const { state, start, stop, set, setDirection, setAlarmSound } = useTimer(getInitialValue())
+  const { state, start, stop, set, toggleDirection, setAlarmSound } = useTimer(getInitialValue())
   const { alarms, addAlarm, toggleActive, deleteAlarm, updateLabel } = useAlarms()
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -60,11 +60,6 @@ export default function App() {
   const handleDragStart = useCallback(() => stop(), [stop])
   const handleDragEnd = useCallback(() => start(), [start])
 
-  const handleToggleDirection = useCallback(() => {
-    stop()
-    setDirection(state.direction === 'countdown' ? 'countup' : 'countdown')
-  }, [state.direction, setDirection, stop])
-
   const handleSetAlarmSound = useCallback(
     (sound: AlarmSound) => setAlarmSound(sound),
     [setAlarmSound]
@@ -88,10 +83,6 @@ export default function App() {
     setSidebarOpen(true)
   }, [])
 
-  const handleToggleDialMode = useCallback(() => {
-    setDialMode((m) => (m === 'alarm' ? 'timer' : 'alarm'))
-  }, [])
-
   return (
     <div className={styles.layout}>
       <AlarmListSidebar
@@ -110,6 +101,33 @@ export default function App() {
       <AlarmPieQueue alarms={alarms} />
 
       <div className={styles.center}>
+        {/* Top-center mode selector */}
+        <div className={styles.modeRow}>
+          <button
+            className={`${styles.modeBtn} ${dialMode === 'alarm' ? styles.modeBtnAlarm : ''}`}
+            onClick={() => setDialMode('alarm')}
+            disabled={!hasActiveAlarm}
+            title={hasActiveAlarm ? 'Show alarm countdown' : 'No active alarms'}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            Alarm
+          </button>
+          <button
+            className={`${styles.modeBtn} ${dialMode === 'timer' ? styles.modeBtnTimer : ''}`}
+            onClick={() => setDialMode('timer')}
+            title="Countdown timer"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            Timer
+          </button>
+        </div>
+
         <TimerDial
           state={state}
           onDragStart={handleDragStart}
@@ -119,17 +137,15 @@ export default function App() {
           previewMinutes={previewMinutes ?? undefined}
           hoursRemaining={timerMode === 'alarm-preview' ? hoursRemaining : undefined}
         />
+
         <div className={styles.footer}>
           <Controls
             direction={state.direction as TimerDirection}
             alarmSound={state.alarmSound}
-            onToggleDirection={handleToggleDirection}
+            onToggleDirection={toggleDirection}
             onSetAlarmSound={handleSetAlarmSound}
             onOpenAlarmList={handleOpenAlarmList}
             onOpenAlarmSet={handleOpenAlarmSet}
-            dialMode={dialMode}
-            hasActiveAlarm={hasActiveAlarm}
-            onToggleDialMode={handleToggleDialMode}
           />
         </div>
       </div>

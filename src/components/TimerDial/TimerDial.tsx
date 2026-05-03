@@ -42,11 +42,13 @@ export function TimerDial({
 
   const angle = valueToAngle(displayValue)
 
+  const isCCW = state.direction === 'countup'
+
   const handleDrag = useCallback(
     (rawAngle: number) => {
-      onSet(angleToValue(rawAngle))
+      onSet(angleToValue(isCCW ? (360 - rawAngle + 360) % 360 : rawAngle))
     },
-    [onSet]
+    [onSet, isCCW]
   )
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -58,8 +60,8 @@ export function TimerDial({
     onDragEnd: isPreview ? noopDrag : onDragEnd,
   })
 
-  const piePath = describePie(CX, CY, DISK_R, 0, angle)
-  const knob = polarToCartesian(CX, CY, DISK_R, angle)
+  const piePath = describePie(CX, CY, DISK_R, 0, angle, isCCW)
+  const knob = polarToCartesian(CX, CY, DISK_R, isCCW ? -angle : angle)
 
   return (
     <svg

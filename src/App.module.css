@@ -16,10 +16,73 @@
   justify-content: center;
   position: relative;
   min-width: 0;
+  gap: 16px;
 }
 
 .footer {
   position: absolute;
   bottom: 16px;
   right: 16px;
+}
+
+/* Top-center mode selector */
+.modeRow {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.modeBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--sidebar-border);
+  background: none;
+  color: var(--color-text-dim);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 150ms, border-color 150ms, background 150ms;
+}
+
+.modeBtn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.modeBtn:hover:not(:disabled) {
+  color: var(--color-text);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.modeBtn:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+.modeBtnAlarm {
+  color: var(--color-arc);
+  border-color: var(--color-arc);
+  background: rgba(193, 21, 53, 0.12);
+}
+
+.modeBtnAlarm:hover:not(:disabled) {
+  background: rgba(193, 21, 53, 0.2);
+  color: var(--color-arc);
+  border-color: var(--color-arc);
+}
+
+.modeBtnTimer {
+  color: var(--color-text);
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.modeBtnTimer:hover {
+  background: rgba(255, 255, 255, 0.1);
 }

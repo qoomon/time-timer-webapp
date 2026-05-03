@@ -30,10 +30,17 @@ export function describePie(
   cy: number,
   r: number,
   startAngle: number,
-  endAngle: number
+  endAngle: number,
+  counterClockwise = false
 ): string {
   if (endAngle - startAngle >= 360) {
     return `M ${cx} ${cy} m -${r} 0 a ${r} ${r} 0 1 0 ${r * 2} 0 a ${r} ${r} 0 1 0 -${r * 2} 0`
+  }
+  if (counterClockwise) {
+    const start = polarToCartesian(cx, cy, r, -startAngle)
+    const end = polarToCartesian(cx, cy, r, -endAngle)
+    const largeArc = endAngle - startAngle > 180 ? 1 : 0
+    return `M ${cx} ${cy} L ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 0 ${end.x} ${end.y} Z`
   }
   const start = polarToCartesian(cx, cy, r, startAngle)
   const end = polarToCartesian(cx, cy, r, endAngle)

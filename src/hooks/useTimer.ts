@@ -39,17 +39,11 @@ export function useTimer(initialValue: number) {
       lastTimeRef.current = timestamp
 
       const step = delta / DURATION_S
-      const next = s.direction === 'countdown' ? s.value - step : s.value + step
+      const next = s.value - step
 
-      if (s.direction === 'countdown' && next <= 0) {
+      if (next <= 0) {
         cancelRaf()
         setState((prev) => ({ ...prev, value: 0, running: false }))
-        playAlarm(s.alarmSound)
-        return
-      }
-      if (s.direction === 'countup' && next >= 1) {
-        cancelRaf()
-        setState((prev) => ({ ...prev, value: 1, running: false }))
         playAlarm(s.alarmSound)
         return
       }
@@ -62,9 +56,7 @@ export function useTimer(initialValue: number) {
 
   const start = useCallback(() => {
     const s = stateRef.current
-    const atEnd =
-      (s.direction === 'countdown' && s.value <= 0) || (s.direction === 'countup' && s.value >= 1)
-    if (atEnd) return
+    if (s.value <= 0) return
     cancelRaf()
     setState((prev) => ({ ...prev, running: true }))
     lastTimeRef.current = null
@@ -85,6 +77,14 @@ export function useTimer(initialValue: number) {
     setState((prev) => ({ ...prev, direction }))
   }, [])
 
+  const toggleDirection = useCallback(() => {
+    setState((prev) => {
+      const direction: TimerDirection = prev.direction === 'countdown' ? 'countup' : 'countdown'
+      storage.set('direction', direction)
+      return { ...prev, direction }
+    })
+  }, [])
+
   const setAlarmSound = useCallback((alarmSound: AlarmSound) => {
     storage.set('alarmSound', alarmSound)
     setState((prev) => ({ ...prev, alarmSound }))
@@ -94,5 +94,5 @@ export function useTimer(initialValue: number) {
     return () => cancelRaf()
   }, [cancelRaf])
 
-  return { state, start, stop, set, setDirection, setAlarmSound }
+  return { state, start, stop, set, setDirection, toggleDirection, setAlarmSound }
 }

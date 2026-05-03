@@ -8,9 +8,6 @@ interface ControlsProps {
   onSetAlarmSound: (sound: AlarmSound) => void
   onOpenAlarmList: () => void
   onOpenAlarmSet: () => void
-  dialMode?: 'timer' | 'alarm'
-  hasActiveAlarm?: boolean
-  onToggleDialMode?: () => void
 }
 
 export function Controls({
@@ -20,9 +17,6 @@ export function Controls({
   onSetAlarmSound,
   onOpenAlarmList,
   onOpenAlarmSet,
-  dialMode,
-  hasActiveAlarm,
-  onToggleDialMode,
 }: ControlsProps) {
   return (
     <div className={styles.controls}>
@@ -54,13 +48,11 @@ export function Controls({
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           {direction === 'countdown' ? (
-            /* rotate-ccw: arc shrinking = counting down */
             <>
               <polyline points="1 4 1 10 7 10" />
               <path d="M3.51 15a9 9 0 1 0 .49-4" />
             </>
           ) : (
-            /* rotate-cw: arc growing = counting up */
             <>
               <polyline points="23 4 23 10 17 10" />
               <path d="M20.49 15A9 9 0 1 1 23 6" />
@@ -88,21 +80,6 @@ export function Controls({
           ))}
         </div>
       </div>
-
-      {hasActiveAlarm && (
-        <button
-          className={`${styles.iconButton} ${dialMode === 'alarm' ? styles.alarmMode : ''}`}
-          onClick={onToggleDialMode}
-          aria-label={dialMode === 'alarm' ? 'Switch to timer mode' : 'Switch to alarm countdown'}
-          title={dialMode === 'alarm' ? 'Timer mode' : 'Alarm countdown'}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-            {dialMode !== 'alarm' && <line x1="1" y1="1" x2="23" y2="23" />}
-          </svg>
-        </button>
-      )}
 
       <button
         className={styles.iconButton}
