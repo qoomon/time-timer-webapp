@@ -43,23 +43,27 @@ export function Controls({
       </button>
 
       <button
-        className={styles.iconButton}
+        className={`${styles.iconButton} ${direction === 'countup' ? styles.countupActive : ''}`}
         onClick={onToggleDirection}
-        aria-label={`Switch to ${direction === 'countdown' ? 'countup' : 'countdown'}`}
-        title="Toggle direction"
+        aria-label={
+          direction === 'countdown'
+            ? 'Counting down — switch to countup'
+            : 'Counting up — switch to countdown'
+        }
+        title={direction === 'countdown' ? 'Countdown ↺' : 'Countup ↻'}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           {direction === 'countdown' ? (
+            /* rotate-ccw: arc shrinking = counting down */
             <>
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 8 8 12 12 16" />
-              <line x1="16" y1="12" x2="8" y2="12" />
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 .49-4" />
             </>
           ) : (
+            /* rotate-cw: arc growing = counting up */
             <>
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 8 16 12 12 16" />
-              <line x1="8" y1="12" x2="16" y2="12" />
+              <polyline points="23 4 23 10 17 10" />
+              <path d="M20.49 15A9 9 0 1 1 23 6" />
             </>
           )}
         </svg>

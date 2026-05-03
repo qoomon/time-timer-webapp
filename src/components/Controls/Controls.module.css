@@ -73,6 +73,15 @@
   color: var(--color-arc);
 }
 
+.countupActive {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.countupActive:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
 .alarmMode {
   color: var(--color-arc);
   background: rgba(193, 21, 53, 0.12);

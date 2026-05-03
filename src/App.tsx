@@ -61,8 +61,9 @@ export default function App() {
   const handleDragEnd = useCallback(() => start(), [start])
 
   const handleToggleDirection = useCallback(() => {
+    stop()
     setDirection(state.direction === 'countdown' ? 'countup' : 'countdown')
-  }, [state.direction, setDirection])
+  }, [state.direction, setDirection, stop])
 
   const handleSetAlarmSound = useCallback(
     (sound: AlarmSound) => setAlarmSound(sound),
