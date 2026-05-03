@@ -1,18 +1,17 @@
 .sidebar {
-  width: var(--sidebar-width);
+  width: 0;
   flex-shrink: 0;
+  overflow: hidden;
   background: var(--sidebar-bg);
   border-right: 1px solid var(--sidebar-border);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transform: translateX(-100%);
-  transition: transform var(--transition-sidebar), width var(--transition-sidebar);
+  transition: width var(--transition-sidebar);
   height: 100%;
 }
 
 .sidebar.open {
-  transform: translateX(0);
+  width: var(--sidebar-width);
 }
 
 @media (max-width: 768px) {
@@ -24,6 +23,16 @@
     height: 100%;
     box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
   }
+}
+
+/* All direct content panels hold their natural width so they are
+   revealed (not squished) as the sidebar animates open */
+.header,
+.list,
+.setForm {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  box-sizing: border-box;
 }
 
 .header {
@@ -49,7 +58,6 @@
   padding: 4px;
   transition: color 150ms, background 150ms;
   flex-shrink: 0;
-  margin-bottom: 0;
   align-self: center;
   margin-right: 4px;
 }

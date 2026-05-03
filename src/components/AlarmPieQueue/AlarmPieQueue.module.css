@@ -1,35 +1,17 @@
 .sidebar {
-  width: var(--sidebar-width);
+  width: 0;
   flex-shrink: 0;
+  overflow: hidden;
   background: var(--sidebar-bg);
   border-right: 1px solid var(--sidebar-border);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
-  transform: translateX(-100%);
-  transition: transform var(--transition-sidebar);
+  transition: width var(--transition-sidebar);
   height: 100%;
-  /* custom scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: var(--sidebar-border) transparent;
-}
-
-.sidebar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: var(--sidebar-border);
-  border-radius: 2px;
 }
 
 .sidebar.open {
-  transform: translateX(0);
+  width: var(--sidebar-width);
 }
 
 @media (max-width: 768px) {
@@ -43,13 +25,33 @@
   }
 }
 
+/* Inner list maintains full width so content is revealed, not squished */
 .pieList {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* ~10% horizontal padding so pie radius ≈ 90% of sidebar width */
-  padding: 14px 14px;
+  padding: 14px;
   gap: 14px;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sidebar-border) transparent;
+}
+
+.pieList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.pieList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pieList::-webkit-scrollbar-thumb {
+  background: var(--sidebar-border);
+  border-radius: 2px;
 }
 
 /* Each pie fills the padded container width, keeping a square aspect ratio */

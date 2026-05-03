@@ -1,6 +1,6 @@
 .dial {
-  width: 80vmin;
-  height: 80vmin;
+  width: min(80vmin, 100%);
+  height: min(80vmin, 100%);
   cursor: pointer;
   touch-action: none;
   user-select: none;
