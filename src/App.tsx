@@ -5,6 +5,7 @@ import { useAlarms } from './hooks/useAlarms'
 import { TimerDial } from './components/TimerDial/TimerDial'
 import { Controls } from './components/Controls/Controls'
 import { AlarmListSidebar } from './components/AlarmListSidebar/AlarmListSidebar'
+import { AlarmPieQueue } from './components/AlarmPieQueue/AlarmPieQueue'
 import styles from './App.module.css'
 
 function getInitialValue(): number {
@@ -88,6 +89,8 @@ export default function App() {
         onAddAlarm={handleAddAlarm}
         defaultSound={state.alarmSound}
       />
+
+      <AlarmPieQueue alarms={alarms} />
 
       <div className={styles.center}>
         <TimerDial
