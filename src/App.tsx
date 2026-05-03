@@ -22,28 +22,40 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarTab, setSidebarTab] = useState<'alarms' | 'set'>('alarms')
   const [previewMinutes, setPreviewMinutes] = useState<number | null>(null)
+  const [hoursRemaining, setHoursRemaining] = useState(0)
+  const [dialMode, setDialMode] = useState<'timer' | 'alarm'>('timer')
 
   const alarmsRef = useRef(alarms)
   alarmsRef.current = alarms
 
+  // Live alarm countdown — updates every second
   useEffect(() => {
     const update = () => {
       const now = Date.now()
       const active = alarmsRef.current.filter((a) => a.active && a.targetTime > now)
       if (active.length === 0) {
         setPreviewMinutes(null)
+        setHoursRemaining(0)
         return
       }
       const nearest = active.reduce((min, a) => (a.targetTime < min.targetTime ? a : min))
-      const msInHour = (nearest.targetTime - now) % 3600000
-      setPreviewMinutes(msInHour / 60000)
+      const diffMs = nearest.targetTime - now
+      setPreviewMinutes((diffMs % 3600000) / 60000)
+      setHoursRemaining(Math.floor(diffMs / 3600000))
     }
     update()
     const id = setInterval(update, 1000)
     return () => clearInterval(id)
   }, [alarms])
 
-  const timerMode: TimerMode = previewMinutes !== null ? 'alarm-preview' : 'timer'
+  // Auto-switch dial mode when alarm presence changes
+  useEffect(() => {
+    const hasActive = alarms.some((a) => a.active && a.targetTime > Date.now())
+    setDialMode(hasActive ? 'alarm' : 'timer')
+  }, [alarms])
+
+  const hasActiveAlarm = previewMinutes !== null
+  const timerMode: TimerMode = dialMode === 'alarm' && hasActiveAlarm ? 'alarm-preview' : 'timer'
 
   const handleDragStart = useCallback(() => stop(), [stop])
   const handleDragEnd = useCallback(() => start(), [start])
@@ -75,6 +87,10 @@ export default function App() {
     setSidebarOpen(true)
   }, [])
 
+  const handleToggleDialMode = useCallback(() => {
+    setDialMode((m) => (m === 'alarm' ? 'timer' : 'alarm'))
+  }, [])
+
   return (
     <div className={styles.layout}>
       <AlarmListSidebar
@@ -100,6 +116,7 @@ export default function App() {
           onSet={set}
           mode={timerMode}
           previewMinutes={previewMinutes ?? undefined}
+          hoursRemaining={timerMode === 'alarm-preview' ? hoursRemaining : undefined}
         />
         <div className={styles.footer}>
           <Controls
@@ -109,6 +126,9 @@ export default function App() {
             onSetAlarmSound={handleSetAlarmSound}
             onOpenAlarmList={handleOpenAlarmList}
             onOpenAlarmSet={handleOpenAlarmSet}
+            dialMode={dialMode}
+            hasActiveAlarm={hasActiveAlarm}
+            onToggleDialMode={handleToggleDialMode}
           />
         </div>
       </div>

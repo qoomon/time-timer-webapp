@@ -15,6 +15,14 @@
   letter-spacing: 0.5px;
 }
 
+.hoursText {
+  font-family: var(--font-mono);
+  font-size: 4.5px;
+  fill: var(--color-arc);
+  pointer-events: none;
+  letter-spacing: 0.3px;
+}
+
 .knob {
   fill: var(--color-knob);
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));

@@ -11,6 +11,7 @@ interface TimerDialProps {
   onSet: (value: number) => void
   mode?: TimerMode
   previewMinutes?: number
+  hoursRemaining?: number
 }
 
 const CX = 50
@@ -33,6 +34,7 @@ export function TimerDial({
   onSet,
   mode = 'timer',
   previewMinutes,
+  hoursRemaining,
 }: TimerDialProps) {
   const isPreview = mode === 'alarm-preview'
 
@@ -100,16 +102,39 @@ export function TimerDial({
         strokeWidth="0.6"
       />
 
-      {/* time label */}
-      <text
-        x={CX}
-        y={CY + 1.5}
-        textAnchor="middle"
-        dominantBaseline="middle"
-        className={styles.timeText}
-      >
-        {formatTime(state.value)}
-      </text>
+      {/* center label — two lines in alarm mode when hours remain */}
+      {isPreview && hoursRemaining !== undefined && hoursRemaining > 0 ? (
+        <>
+          <text
+            x={CX}
+            y={CY - 3}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            className={styles.timeText}
+          >
+            {formatTime(displayValue)}
+          </text>
+          <text
+            x={CX}
+            y={CY + 5}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            className={styles.hoursText}
+          >
+            +{hoursRemaining}h
+          </text>
+        </>
+      ) : (
+        <text
+          x={CX}
+          y={CY + 1.5}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          className={styles.timeText}
+        >
+          {formatTime(displayValue)}
+        </text>
+      )}
 
       {/* drag knob — sits on outer edge, hidden in preview mode */}
       {!isPreview && <circle cx={knob.x} cy={knob.y} r={KNOB_R} className={styles.knob} />}

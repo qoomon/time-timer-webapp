@@ -72,3 +72,13 @@
 .dropdownItem.active {
   color: var(--color-arc);
 }
+
+.alarmMode {
+  color: var(--color-arc);
+  background: rgba(193, 21, 53, 0.12);
+}
+
+.alarmMode:hover {
+  color: var(--color-arc);
+  background: rgba(193, 21, 53, 0.22);
+}
