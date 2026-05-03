@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import type { TimerState } from '../../types'
+import type { TimerMode, TimerState } from '../../types'
 import { angleToValue, describePie, polarToCartesian, valueToAngle } from '../../utils/geometry'
 import { usePointerDrag } from '../../hooks/usePointerDrag'
 import styles from './TimerDial.module.css'
@@ -9,6 +9,8 @@ interface TimerDialProps {
   onDragStart: () => void
   onDragEnd: () => void
   onSet: (value: number) => void
+  mode?: TimerMode
+  previewMinutes?: number
 }
 
 const CX = 50
@@ -24,8 +26,19 @@ function formatTime(value: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
-export function TimerDial({ state, onDragStart, onDragEnd, onSet }: TimerDialProps) {
-  const angle = valueToAngle(state.value)
+export function TimerDial({
+  state,
+  onDragStart,
+  onDragEnd,
+  onSet,
+  mode = 'timer',
+  previewMinutes,
+}: TimerDialProps) {
+  const isPreview = mode === 'alarm-preview'
+
+  const displayValue = isPreview && previewMinutes !== undefined ? previewMinutes / 60 : state.value
+
+  const angle = valueToAngle(displayValue)
 
   const handleDrag = useCallback(
     (rawAngle: number) => {
@@ -34,10 +47,13 @@ export function TimerDial({ state, onDragStart, onDragEnd, onSet }: TimerDialPro
     [onSet]
   )
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const noopDrag = useCallback(() => {}, [])
+
   const { containerRef, pointerHandlers } = usePointerDrag({
-    onDragStart,
-    onDrag: handleDrag,
-    onDragEnd,
+    onDragStart: isPreview ? noopDrag : onDragStart,
+    onDrag: isPreview ? noopDrag : handleDrag,
+    onDragEnd: isPreview ? noopDrag : onDragEnd,
   })
 
   const piePath = describePie(CX, CY, DISK_R, 0, angle)
@@ -95,8 +111,8 @@ export function TimerDial({ state, onDragStart, onDragEnd, onSet }: TimerDialPro
         {formatTime(state.value)}
       </text>
 
-      {/* drag knob — sits on outer edge */}
-      <circle cx={knob.x} cy={knob.y} r={KNOB_R} className={styles.knob} />
+      {/* drag knob — sits on outer edge, hidden in preview mode */}
+      {!isPreview && <circle cx={knob.x} cy={knob.y} r={KNOB_R} className={styles.knob} />}
     </svg>
   )
 }

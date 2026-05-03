@@ -2,7 +2,7 @@ const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:5176',
+    baseUrl: 'http://localhost:5180',
     screenshotsFolder: 'cypress/screenshots',
     video: false,
   },

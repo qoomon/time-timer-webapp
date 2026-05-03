@@ -6,6 +6,8 @@ interface ControlsProps {
   alarmSound: AlarmSound
   onToggleDirection: () => void
   onSetAlarmSound: (sound: AlarmSound) => void
+  onOpenAlarmList: () => void
+  onOpenAlarmSet: () => void
 }
 
 export function Controls({
@@ -13,9 +15,27 @@ export function Controls({
   alarmSound,
   onToggleDirection,
   onSetAlarmSound,
+  onOpenAlarmList,
+  onOpenAlarmSet,
 }: ControlsProps) {
   return (
     <div className={styles.controls}>
+      <button
+        className={styles.iconButton}
+        onClick={onOpenAlarmList}
+        aria-label="Open alarms list"
+        title="Alarms"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="8" y1="6" x2="21" y2="6" />
+          <line x1="8" y1="12" x2="21" y2="12" />
+          <line x1="8" y1="18" x2="21" y2="18" />
+          <line x1="3" y1="6" x2="3.01" y2="6" />
+          <line x1="3" y1="12" x2="3.01" y2="12" />
+          <line x1="3" y1="18" x2="3.01" y2="18" />
+        </svg>
+      </button>
+
       <button
         className={styles.iconButton}
         onClick={onToggleDirection}
@@ -58,6 +78,22 @@ export function Controls({
           ))}
         </div>
       </div>
+
+      <button
+        className={styles.iconButton}
+        onClick={onOpenAlarmSet}
+        aria-label="Set new alarm"
+        title="Set alarm"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+          <line x1="12" y1="3" x2="12" y2="1" />
+          <line x1="18.5" y1="5.5" x2="20" y2="4" />
+          <line x1="5.5" y1="5.5" x2="4" y2="4" />
+        </svg>
+      </button>
     </div>
   )
 }

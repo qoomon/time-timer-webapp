@@ -10,6 +10,12 @@
   --color-text: #e0e0e0;
   --color-text-dim: #666;
   --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  --sidebar-width: 280px;
+  --sidebar-bg: #1e2129;
+  --sidebar-border: #2a2f3a;
+  --color-alarm-active: #c11535;
+  --color-alarm-inactive: #444;
+  --transition-sidebar: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 *,
