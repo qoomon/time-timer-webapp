@@ -56,4 +56,40 @@ describe('AlarmListSidebar', () => {
     )
     expect(container.querySelector('aside')?.className).not.toContain('open')
   })
+
+  it('renders Set Alarm tab with form when activeTab is set', () => {
+    render(
+      <AlarmListSidebar
+        alarms={[]}
+        open={true}
+        activeTab="set"
+        onClose={noop}
+        onTabChange={noop}
+        onToggleActive={noop}
+        onDelete={noop}
+        onLabelChange={noop}
+        onAddAlarm={noop}
+        defaultSound="digital"
+      />
+    )
+    // tab button + submit button both named "Set Alarm"
+    expect(screen.getAllByRole('button', { name: 'Set Alarm' })).toHaveLength(2)
+    expect(screen.getByLabelText('Hour')).toBeInTheDocument()
+    expect(screen.getByLabelText('Minute')).toBeInTheDocument()
+  })
+
+  it('renders tab buttons', () => {
+    render(
+      <AlarmListSidebar
+        alarms={[]}
+        open={true}
+        onClose={noop}
+        onToggleActive={noop}
+        onDelete={noop}
+        onLabelChange={noop}
+      />
+    )
+    expect(screen.getByText('Alarms')).toBeInTheDocument()
+    expect(screen.getByText('Set Alarm')).toBeInTheDocument()
+  })
 })
