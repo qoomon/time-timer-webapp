@@ -2,10 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Alarm, AlarmSound, TimerDirection, TimerMode } from './types'
 import { useTimer } from './hooks/useTimer'
 import { useAlarms } from './hooks/useAlarms'
+import { useSettings } from './hooks/useSettings'
 import { TimerDial } from './components/TimerDial/TimerDial'
 import { Controls } from './components/Controls/Controls'
 import { AlarmListSidebar } from './components/AlarmListSidebar/AlarmListSidebar'
 import { AlarmPieQueue } from './components/AlarmPieQueue/AlarmPieQueue'
+import { SettingsSidebar } from './components/SettingsSidebar/SettingsSidebar'
 import styles from './App.module.css'
 
 function getInitialValue(): number {
@@ -18,8 +20,9 @@ function getInitialValue(): number {
 export default function App() {
   const { state, start, stop, set, toggleDirection, setAlarmSound } = useTimer(getInitialValue())
   const { alarms, addAlarm, toggleActive, deleteAlarm, updateLabel } = useAlarms()
+  const { settings, updateSettings } = useSettings()
 
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [activeSidebar, setActiveSidebar] = useState<'none' | 'alarms' | 'settings'>('none')
   const [sidebarTab, setSidebarTab] = useState<'alarms' | 'set'>('alarms')
   const [previewMinutes, setPreviewMinutes] = useState<number | null>(null)
   const [hoursRemaining, setHoursRemaining] = useState(0)
@@ -75,21 +78,28 @@ export default function App() {
 
   const handleOpenAlarmList = useCallback(() => {
     setSidebarTab('alarms')
-    setSidebarOpen(true)
+    setActiveSidebar('alarms')
   }, [])
 
   const handleOpenAlarmSet = useCallback(() => {
     setSidebarTab('set')
-    setSidebarOpen(true)
+    setActiveSidebar('alarms')
   }, [])
+
+  const handleOpenSettings = useCallback(() => {
+    setActiveSidebar((prev) => (prev === 'settings' ? 'none' : 'settings'))
+  }, [])
+
+  const handleCloseAlarms = useCallback(() => setActiveSidebar('none'), [])
+  const handleCloseSettings = useCallback(() => setActiveSidebar('none'), [])
 
   return (
     <div className={styles.layout}>
       <AlarmListSidebar
         alarms={alarms}
-        open={sidebarOpen}
+        open={activeSidebar === 'alarms'}
         activeTab={sidebarTab}
-        onClose={() => setSidebarOpen(false)}
+        onClose={handleCloseAlarms}
         onTabChange={setSidebarTab}
         onToggleActive={toggleActive}
         onDelete={deleteAlarm}
@@ -146,9 +156,17 @@ export default function App() {
             onSetAlarmSound={handleSetAlarmSound}
             onOpenAlarmList={handleOpenAlarmList}
             onOpenAlarmSet={handleOpenAlarmSet}
+            onOpenSettings={handleOpenSettings}
           />
         </div>
       </div>
+
+      <SettingsSidebar
+        open={activeSidebar === 'settings'}
+        settings={settings}
+        onClose={handleCloseSettings}
+        onUpdate={updateSettings}
+      />
     </div>
   )
 }

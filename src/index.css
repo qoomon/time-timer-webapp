@@ -10,6 +10,8 @@
   --color-text: #e0e0e0;
   --color-text-dim: #666;
   --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  --font-timer: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  --font-size-timer: 7px;
   --sidebar-width: 280px;
   --sidebar-bg: #1e2129;
   --sidebar-border: #2a2f3a;

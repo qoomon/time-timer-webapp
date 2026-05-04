@@ -8,8 +8,8 @@
 }
 
 .timeText {
-  font-family: var(--font-mono);
-  font-size: 7px;
+  font-family: var(--font-timer);
+  font-size: var(--font-size-timer);
   fill: var(--color-text-dim);
   pointer-events: none;
   letter-spacing: 0.5px;

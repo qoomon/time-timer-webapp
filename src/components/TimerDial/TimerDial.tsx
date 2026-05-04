@@ -109,18 +109,18 @@ export function TimerDial({
         <>
           <text
             x={CX}
-            y={CY - 3}
+            y={CY - 2.5}
             textAnchor="middle"
-            dominantBaseline="middle"
+            dominantBaseline="central"
             className={styles.timeText}
           >
             {formatTime(displayValue)}
           </text>
           <text
             x={CX}
-            y={CY + 5}
+            y={CY + 4.5}
             textAnchor="middle"
-            dominantBaseline="middle"
+            dominantBaseline="central"
             className={styles.hoursText}
           >
             +{hoursRemaining}h
@@ -129,9 +129,9 @@ export function TimerDial({
       ) : (
         <text
           x={CX}
-          y={CY + 1.5}
+          y={CY}
           textAnchor="middle"
-          dominantBaseline="middle"
+          dominantBaseline="central"
           className={styles.timeText}
         >
           {formatTime(displayValue)}

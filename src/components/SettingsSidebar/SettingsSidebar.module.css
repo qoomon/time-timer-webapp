@@ -1,0 +1,258 @@
+.sidebar {
+  width: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--sidebar-bg);
+  border-left: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  transition: width var(--transition-sidebar);
+  height: 100%;
+}
+
+.sidebar.open {
+  width: var(--sidebar-width);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 10;
+    height: 100%;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.inner {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--sidebar-border);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: var(--color-text-dim);
+  cursor: pointer;
+  padding: 4px;
+  transition: color 150ms, background 150ms;
+  flex-shrink: 0;
+}
+
+.closeBtn:hover {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.closeBtn svg {
+  width: 100%;
+  height: 100%;
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+/* Color swatches */
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background-color: var(--swatch-color);
+  cursor: pointer;
+  transition: transform 100ms, border-color 100ms;
+  padding: 0;
+}
+
+.swatch:hover {
+  transform: scale(1.15);
+}
+
+.swatchActive {
+  border-color: var(--color-text);
+}
+
+.colorPickerLabel {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px dashed var(--sidebar-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-dim);
+  transition: color 150ms, border-color 150ms;
+  position: relative;
+}
+
+.colorPickerLabel:hover {
+  color: var(--color-text);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.colorPickerLabel svg {
+  width: 14px;
+  height: 14px;
+}
+
+.colorPicker {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Radio row (text size) */
+.radioRow {
+  display: flex;
+  gap: 6px;
+}
+
+.radioInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radioLabel {
+  cursor: pointer;
+}
+
+.radioBtn {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--sidebar-border);
+  font-size: 12px;
+  color: var(--color-text-dim);
+  cursor: pointer;
+  transition: color 150ms, border-color 150ms, background 150ms;
+  user-select: none;
+}
+
+.radioBtn:hover {
+  color: var(--color-text);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.radioBtnActive {
+  color: var(--color-text);
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* Font list */
+.fontList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fontRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 150ms;
+}
+
+.fontRow:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.fontDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-text-dim);
+  flex-shrink: 0;
+  transition: border-color 150ms, background 150ms;
+}
+
+.fontDotActive {
+  border-color: var(--color-text);
+  background: var(--color-text);
+}
+
+.fontLabel {
+  font-size: 13px;
+  color: var(--color-text-dim);
+  flex: 1;
+}
+
+.fontPreview {
+  font-size: 15px;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+}
+
+.fontPreview[data-font='mono'] {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+.fontPreview[data-font='sans'] {
+  font-family: system-ui, 'Segoe UI', Arial, sans-serif;
+}
+
+.fontPreview[data-font='serif'] {
+  font-family: Georgia, 'Times New Roman', serif;
+}

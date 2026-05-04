@@ -2,6 +2,12 @@ export type TimerDirection = 'countdown' | 'countup'
 export type AlarmSound = 'digital' | 'soft'
 export type TimerMode = 'timer' | 'alarm-preview'
 
+export interface AppSettings {
+  pieColor: string
+  fontSize: 'sm' | 'md' | 'lg'
+  fontFamily: 'mono' | 'sans' | 'serif'
+}
+
 export interface TimerState {
   value: number
   running: boolean
