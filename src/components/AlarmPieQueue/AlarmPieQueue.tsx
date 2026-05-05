@@ -3,7 +3,7 @@ import type { Alarm } from '../../types'
 import { describePie } from '../../utils/geometry'
 import styles from './AlarmPieQueue.module.css'
 
-function BigPie({ fraction }: { fraction: number }) {
+function BigPie({ fraction, label }: { fraction: number; label?: string }) {
   const CX = 50
   const CY = 50
   const R = 50
@@ -14,6 +14,17 @@ function BigPie({ fraction }: { fraction: number }) {
     <svg className={styles.pie} viewBox="0 0 100 100" aria-hidden="true">
       <circle cx={CX} cy={CY} r={R} fill="var(--color-track)" />
       {fraction > 0 && <path d={path} fill="var(--color-arc)" />}
+      {label !== undefined && (
+        <text
+          x={CX}
+          y={CY}
+          textAnchor="middle"
+          dominantBaseline="central"
+          className={styles.hourLabel}
+        >
+          {label}
+        </text>
+      )}
     </svg>
   )
 }
@@ -51,7 +62,7 @@ export function AlarmPieQueue({ alarms }: AlarmPieQueueProps) {
         {/* top pie = minutes remaining in the current hour */}
         <BigPie fraction={partialFraction} />
         {Array.from({ length: fullHours }, (_, i) => (
-          <BigPie key={i} fraction={1} />
+          <BigPie key={i} fraction={1} label={String(fullHours - i)} />
         ))}
       </div>
     </aside>

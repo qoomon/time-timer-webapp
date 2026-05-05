@@ -62,3 +62,12 @@
   flex-shrink: 0;
   filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
 }
+
+.hourLabel {
+  font-family: var(--font-timer);
+  font-size: 28px;
+  font-weight: 700;
+  fill: rgba(255, 255, 255, 0.82);
+  pointer-events: none;
+  letter-spacing: -0.5px;
+}
