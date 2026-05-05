@@ -32,3 +32,32 @@
 .knob:active {
   cursor: grabbing;
 }
+
+/* Center play/pause button */
+.centerHitArea {
+  cursor: pointer;
+  fill: transparent;
+}
+
+.hoverIcon {
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+  fill: rgba(255, 255, 255, 0.75);
+}
+
+.hoverIconVisible {
+  opacity: 1;
+}
+
+@keyframes feedbackFlash {
+  0%   { opacity: 0.9; }
+  30%  { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+.feedbackIcon {
+  pointer-events: none;
+  fill: rgba(255, 255, 255, 0.9);
+  animation: feedbackFlash 550ms ease-out forwards;
+}

@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import type { TimerMode, TimerState } from '../../types'
 import { angleToValue, describePie, polarToCartesian, valueToAngle } from '../../utils/geometry'
 import { usePointerDrag } from '../../hooks/usePointerDrag'
@@ -18,6 +18,8 @@ const CX = 50
 const CY = 50
 const DISK_R = 45
 const CENTER_R = 9
+// Invisible hit area extends a few units beyond the visual hole
+const CENTER_HIT_R = 13
 const KNOB_R = 3.8
 
 function formatTime(value: number): string {
@@ -25,6 +27,19 @@ function formatTime(value: number): string {
   const m = Math.floor(totalSeconds / 60)
   const s = totalSeconds % 60
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+}
+
+function PauseIcon() {
+  return (
+    <>
+      <rect x="46" y="45" width="3" height="10" rx="1" />
+      <rect x="51" y="45" width="3" height="10" rx="1" />
+    </>
+  )
+}
+
+function PlayIcon() {
+  return <polygon points="47,44.5 47,55.5 57,50" />
 }
 
 export function TimerDial({
@@ -38,10 +53,12 @@ export function TimerDial({
 }: TimerDialProps) {
   const isPreview = mode === 'alarm-preview'
 
+  const [centerHovered, setCenterHovered] = useState(false)
+  const [feedbackType, setFeedbackType] = useState<'play' | 'pause' | null>(null)
+  const [feedbackKey, setFeedbackKey] = useState(0)
+
   const displayValue = isPreview && previewMinutes !== undefined ? previewMinutes / 60 : state.value
-
   const angle = valueToAngle(displayValue)
-
   const isCCW = state.direction === 'countup'
 
   const handleDrag = useCallback(
@@ -60,8 +77,31 @@ export function TimerDial({
     onDragEnd: isPreview ? noopDrag : onDragEnd,
   })
 
+  const handleCenterPointerDown = useCallback((e: React.PointerEvent) => {
+    e.stopPropagation()
+  }, [])
+
+  const handleCenterClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      if (isPreview) return
+      if (state.running) {
+        onDragStart()
+        setFeedbackType('pause')
+      } else {
+        onDragEnd()
+        setFeedbackType('play')
+      }
+      setFeedbackKey((k) => k + 1)
+    },
+    [isPreview, state.running, onDragStart, onDragEnd]
+  )
+
   const piePath = describePie(CX, CY, DISK_R, 0, angle, isCCW)
   const knob = polarToCartesian(CX, CY, DISK_R, isCCW ? -angle : angle)
+
+  const showHoverIcon = centerHovered && !isPreview
+  const hoverIconClass = `${styles.hoverIcon} ${showHoverIcon ? styles.hoverIconVisible : ''}`
 
   return (
     <svg
@@ -138,8 +178,38 @@ export function TimerDial({
         </text>
       )}
 
+      {/* hover icon — pause when running, play when paused */}
+      {!isPreview && (
+        <g className={hoverIconClass}>{state.running ? <PauseIcon /> : <PlayIcon />}</g>
+      )}
+
+      {/* feedback flash — re-keyed on every click to restart animation */}
+      {feedbackType !== null && (
+        <g
+          key={feedbackKey}
+          className={styles.feedbackIcon}
+          onAnimationEnd={() => setFeedbackType(null)}
+        >
+          {feedbackType === 'play' ? <PlayIcon /> : <PauseIcon />}
+        </g>
+      )}
+
       {/* drag knob — sits on outer edge, hidden in preview mode */}
       {!isPreview && <circle cx={knob.x} cy={knob.y} r={KNOB_R} className={styles.knob} />}
+
+      {/* transparent center hit area — blocks drag, handles play/pause click */}
+      {!isPreview && (
+        <circle
+          cx={CX}
+          cy={CY}
+          r={CENTER_HIT_R}
+          className={styles.centerHitArea}
+          onPointerDown={handleCenterPointerDown}
+          onClick={handleCenterClick}
+          onPointerEnter={() => setCenterHovered(true)}
+          onPointerLeave={() => setCenterHovered(false)}
+        />
+      )}
     </svg>
   )
 }
